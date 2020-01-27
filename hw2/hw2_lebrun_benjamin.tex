@@ -1,0 +1,179 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Memo
+% LaTeX Template
+% Version 1.0 (30/12/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Rob Oakes (http://www.oak-tree.us) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,11pt]{texMemo} % Set the paper size (letterpaper, a4paper, etc) and font size (10pt, 11pt or 12pt)
+
+\usepackage{parskip} % Adds spacing between paragraphs
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{enumitem}
+\hypersetup{citecolor=DeepPink4}
+\hypersetup{linkcolor=red}
+\hypersetup{urlcolor=blue}
+\usepackage{cleveref}
+\setlength{\parindent}{15pt} % Indent paragraphs
+
+\lstset{
+  language=C,                % choose the language of the code
+  numbers=left,                   % where to put the line-numbers
+  stepnumber=1,                   % the step between two line-numbers.        
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+}
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+\memoto{Dr. Larry Pyeatt} % Recipient(s)
+
+\memofrom{Benjamin Lebrun} % Sender(s)
+
+\memosubject{Homework 2} % Memo subject
+
+\memodate{\today} % Date, set to \today for automatically printing todays date
+
+%\logo{\includegraphics[width=0.1\textwidth]{logo.png}} % Institution logo at the top right of the memo, comment out this line for no logo
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+
+\maketitle % Print the memo header information
+
+%----------------------------------------------------------------------------------------
+%	MEMO CONTENT
+%----------------------------------------------------------------------------------------
+
+\section*{Problem 2.1}
+What is the difference between
+\begin{enumerate}[label=\Alph*]
+    \item the .data section and .bss section?
+    \item the .ascii and .asciz directives?
+    \item the .word and the .long directives?
+\end{enumerate}
+\subsection*{Solution}
+\begin{enumerate}[label=\Alph*]
+    \item .bss is generally filled with zeroes for initializing certain variables, mainly anything that needs to be initialized to zero;
+        .data is generally used for global variables and constants with labels.
+    \item .asciz is like the .ascii directive which expects zero or more string literals. .asciz although follows
+        each string with an ASCII null character.
+    \item for the ARM processor, these two directives act exactly the same. However, in another assembly language these two
+        may simply represent different sized data types.
+\end{enumerate}
+
+\section*{Problem 2.2}
+What is the purpose of the .align assembler directive? What does ".align 2" do in GNU ARM assembly?
+\subsection*{Solution}
+For the ARM CPU, if a word is not properly aligned the processor will take more time to load if it is not
+properly aligned. Proper alignment will allow the CPU to load one byte, two bytes(half word) and four bytes(word)
+quickly.
+
+.align 2 will fill an area on the processor with two extra zero padding bytes, if put correctly after a 
+label or variable of data will provide a performance boost. This is generally good practice to put an align
+directive after declaring a character or half word of data.
+
+\section*{Problem 2.5}
+What is the total memory, in bytes, allocated for the following variables?
+\begin{lstlisting}
+    var1: .word 23
+    var2: .long 0xC
+    expr: .ascii ">>"
+\end{lstlisting}
+\subsection*{Solution}
+\begin{enumerate}
+    \item 4 byte
+    \item 4 bytes
+    \item 3 bytes
+\end{enumerate}
+
+\section*{Problem 2.7}
+Write assembly code to declare variables equivalent to the following C code:
+\begin{lstlisting}
+    /* these variables are declared outside of any function */
+    static int foo[3];  /* visible anywhere in the current file */
+    static char bar[4]; /* visible anywhere in the current file */
+    char barfoo;        /* visible anywhere in the program */
+    int foobar;         /* visible anywhere in the program */
+\end{lstlisting}
+\subsection*{Solution}
+\begin{lstlisting}
+    foo:    .word   0x000
+    bar:    .ascii  "\0\0\0\0"
+    barfoo: .ascii  "\0"
+    foobar: .word   0
+\end{lstlisting}
+
+\newpage
+\section*{Problem 2.9}
+Insert the minimum number of .align directives necessary in the following code
+so that all word variables are aligned on word boundaries and all halfword variables
+are aligned on halfword boundaries, while minimizing the amount of wasted space.
+\begin{lstlisting}
+        .data
+        .align  2
+    a:  .byte   0
+    b:  .word   32
+    c:  .byte   3
+    d:  .hword  45
+    e:  .hword  0
+    f:  .byte   0
+    g:  .word   128
+\end{lstlisting}
+\subsection*{Solution}
+\begin{lstlisting}
+    .data
+    .align  2
+a:  .byte   0
+b:  .word   32
+c:  .byte   3
+    .align  1
+d:  .hword  45
+    .align  4
+e:  .hword  0
+f:  .byte   0
+g:  .word   128
+\end{lstlisting}
+
+\section*{Problem 2.12}
+Why are .ascii and .asciz directives usually followed by an .align directive, but .word directives are not?
+\subsection*{Solution}
+For performance on the ARM processor, we need the address aligned to a four byte boundary, or on a two byte boundary
+for half words. If our .ascii or .asciz data does not end on this boundary, it's important to use the .align directive
+after declaring this data to realign the program to the four or two byte boundary.
+
+\newpage
+\section*{Problem 2.13}
+Using the “Hello World” program shown in Listing 2.1 as a template, write a program that will print your name.
+\subsection*{Solution}
+\lstinputlisting{print_name.S}
+\end{document}

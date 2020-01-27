@@ -1,0 +1,198 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Memo
+% LaTeX Template
+% Version 1.0 (30/12/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Rob Oakes (http://www.oak-tree.us) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,11pt]{texMemo} % Set the paper size (letterpaper, a4paper, etc) and font size (10pt, 11pt or 12pt)
+
+\usepackage{parskip} % Adds spacing between paragraphs
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\hypersetup{citecolor=DeepPink4}
+\hypersetup{linkcolor=red}
+\hypersetup{urlcolor=blue}
+\usepackage{cleveref}
+\setlength{\parindent}{15pt} % Indent paragraphs
+
+\lstset{
+  language=C,                % choose the language of the code
+  numbers=left,                   % where to put the line-numbers
+  stepnumber=1,                   % the step between two line-numbers.        
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+}
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+\memoto{Dr. Larry Pyeatt} % Recipient(s)
+
+\memofrom{Benjamin Lebrun} % Sender(s)
+
+\memosubject{Homework 1} % Memo subject
+
+\memodate{\today} % Date, set to \today for automatically printing todays date
+
+%\logo{\includegraphics[width=0.1\textwidth]{logo.png}} % Institution logo at the top right of the memo, comment out this line for no logo
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+
+\maketitle % Print the memo header information
+
+%----------------------------------------------------------------------------------------
+%	MEMO CONTENT
+%----------------------------------------------------------------------------------------
+
+\section*{Problem 1.2}
+Perform the base conversions to fill out the table
+\subsection*{Solution}
+
+\begin{table}[ht]
+    \begin{tabular}{lllll}
+    Base 10        & Base 2             & Base 16       & Base 21 &  \\
+    $23_{10}$      & $10111_2$          & $17_{16}$     & $12_{21}$      &  \\
+    $19_{10}$      & $010011_2$         & $13_{16}$     & $J_{21}$       &  \\
+    $2747_{10}$    & $0101010111011_2$  & $ABB_{16}$    & $64H_{21}$     &  \\
+    $1253_{10}$    & $010011100101_2$   & $4E5_{16}$    & $2HE_{21}$     & 
+    \end{tabular}
+\end{table}
+
+This was done by following the process in the book via exponents to convert to base 10, then back using
+long division.
+
+Example of converting $2HE_{21}$ to base 10.
+
+\[
+    2*21^2+17*21^1+14*21^0 = 1253
+\]
+
+And an example of the conversion of $ABB_{16}$ to base 21 (after finding the decimal equilvalent 2747).
+
+\[
+    \frac{2747}{21} = 130 R 17
+\]
+
+\[
+    \frac{130}{21} = 6 R 4
+\]
+
+\[
+    \frac{6}{21} = 0 R 6
+\]
+
+Taking the remainders, we reconstruct the base 21 number as $64H$
+
+\newpage
+\section*{Problem 1.4}
+What is \textbackslash minus ! given that \textbackslash and ! are ASCII charadcers? Give your answer in binary.
+\subsection*{Solution}
+Find the characters integer values in ASCII, subtract, then convert to binary.
+\textbackslash = 92
+! = 33
+
+\[
+    92 - 33 = 59
+\]
+
+$\frac{59}{2} = 29 R 1$
+
+$\frac{29}{2} = 14 R 1$
+
+$\frac{14}{2} = 7 R 0$
+
+$\frac{7}{2} = 3 R 1$
+
+$\frac{3}{2} = 1 R 1$
+
+$\frac{1}{2} = 0 R 1$
+
+This makes the answer $111011_2$
+
+Code was also generated to test this output.
+
+\lstinputlisting{test.c}
+
+\newpage
+\section*{Problem 1.6}
+Suppose that the string "This is a nice day" is stored beginning at address 
+$4B3269AC_{16}$. What are the contents of the byte at address $4B3269B1_{16}$
+
+\subsection*{Solution}
+In hex, we can simply subtract the last two digits of the address with each other, since in the subtraction,
+the remaining digits cancel. Therefore, when we convert $AC$ and $B1$ back into binary we find 
+177 and 172, giving us a difference of 5. Assuming every character is the size of one address,
+at the address $4B3269B1_{16}$ we would find the character 'i' in ASCII, which in hex is 69.
+
+\section*{Problem 1.8}
+Given the following binary string:
+
+01001001 01110011 01101110 00100111 01110100 00100000 01000001 01110011 01110011 01100101 01101101 01100010
+01101100 01111001 00100000 01000110 01110101 01101110 00111111 0000000
+
+\subsection*{Hexadecimal string}
+This can be done quickly by splitting each 8 bit string and splitting it in two, then solving for each side of
+the Hexadecimal equilvalent for that string.
+
+49 73 6E 27 74 20 41 73 73 65 6D 62 6C 79 20 46 75 6E 3F 00
+
+\subsection*{First four bytes to a stirng of base ten numbers}
+73 115 110 39
+
+\subsection*{Convert the first (little-endian) halfword to base ten}
+Little endian begins at the least significant byte. The last byte in our string is the string of zeros in base 2.
+
+0
+
+\subsection*{Convert the first (big-endian) halfword to base ten}
+Big endian begins at the most significant byte. In our case is the very first byte in the string.
+
+73
+
+\subsection*{Convert the binary string to ASCII characters}
+Isn't Assembly Fun?\textbackslash0
+
+\newpage
+\section*{Problem 1.11}
+UTF-8 is often referred to as Unicode. Why is that not correct?
+
+\subsection*{Solution}
+Unicode only has a 16-bit encoding, UTF-8 however is variable length encoding.
+
+\section*{Problem 1.13}
+What are the differences between a CPU register adn a memory location.
+
+\subsection*{Solution}
+A CPU register is a piece of memory that actually sits on the chip, generally awaiting to be operated
+on with a command. The other generally sits on RAM with an address to be accessed and loaded onto a register.
+
+\end{document}
