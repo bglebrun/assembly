@@ -1,0 +1,147 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Memo
+% LaTeX Template
+% Version 1.0 (30/12/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Rob Oakes (http://www.oak-tree.us) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,11pt]{texMemo} % Set the paper size (letterpaper, a4paper, etc) and font size (10pt, 11pt or 12pt)
+
+\usepackage{parskip} % Adds spacing between paragraphs
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{enumitem}
+\hypersetup{citecolor=DeepPink4}
+\hypersetup{linkcolor=red}
+\hypersetup{urlcolor=blue}
+\usepackage{cleveref}
+\setlength{\parindent}{15pt} % Indent paragraphs
+
+\lstset{
+  language=C,                % choose the language of the code
+  numbers=left,                   % where to put the line-numbers
+  stepnumber=1,                   % the step between two line-numbers.        
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+}
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+\memoto{Dr. Larry Pyeatt} % Recipient(s)
+
+\memofrom{Benjamin Lebrun} % Sender(s)
+
+\memosubject{Homework 6} % Memo subject
+
+\memodate{2/24/2020} % Date, set to \today for automatically printing todays date
+
+%\logo{\includegraphics[width=0.1\textwidth]{logo.png}} % Institution logo at the top right of the memo, comment out this line for no logo
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+
+\maketitle % Print the memo header information
+
+%----------------------------------------------------------------------------------------
+%	MEMO CONTENT
+%----------------------------------------------------------------------------------------
+\section*{Problem 6.1}
+What are the advantages of designing software using abstract data types?
+\subsection*{Solution}
+Designing software with hidden data types and allowing client code to interface with the data
+instead is important in both modular programming, allowing us to split the work in teams, 
+groups, induviduals, with the agreed interface in place, allowing the data behind the interface 
+change and be modified or optimized without affecting other sections of code.
+
+\section*{Problem 6.3}
+High-level languages provide mechanisms for information hiding, but assembly does not.
+Why should the assembly programmer not simply bypass all information hiding and access the
+internal data structures of any ADT directly?
+\subsection*{Solution}
+Because future updates to the packages may move or modify how the internal ADT stores or organizes data.
+If we're using assembly features such as pointers or attempting to directly access parts of the
+ADTs memory, in a future update of the software, that accessible data may not actually exist. 
+Breaking the assembly programmer's code.
+
+\section*{Problem 6.5}
+Given the following definitions for a stack ADT:
+\lstinputlisting{./stack.h}
+\lstinputlisting{./stack.c}
+Write the InitStack() function in ARM assembly language
+\subsection*{Solution}
+\lstinputlisting{6.5.S}
+
+\section*{Problem 6.6}
+Referring to the previous question, write the Push() function in ARM assembly language.
+\subsection*{Solution}
+\lstinputlisting{6.6.S}
+
+\section*{Problem 6.7}
+Referring to the previous two questions, write the Pop() function in ARM assembly language.
+\subsection*{Solution}
+\lstinputlisting{6.7.S}
+
+\section*{Problem 6.8}
+Referring to the previous three questions, write the Top() function in ARM assembly language.
+\subsection*{Solution}
+\lstinputlisting{6.8.S}
+
+\section*{Problem 6.9}
+Referring to the previous four questions, write the PrintStack() function in ARM assembly language.
+\subsection*{Solution}
+\lstinputlisting{6.9.S}
+
+\section*{Problem 6.11}
+The “Software Engineering Code of Ethics And Professional Practice” states that a responsible software
+engineer should “Approve software only if they have well-founded belief that it is safe, meets
+specifications, passes appropriate tests…” (sub-principle 1.03) and “Ensure adequate testing, debugging,
+and review of software…on which they work.” (sub-principle 3.10). Unfortunately, defects did make their
+way into the system.
+The software engineering code of ethics also states that a responsible software engineer should “Treat
+all forms of software maintenance with the same professionalism as new development.”
+
+\begin{enumerate}[label=(\alph*)]
+    \item Explain how the Software Engineering Code of Ethics And Professional Practice were violated by the Therac 25 developers.
+    \item How should the engineers and managers at AECL have responded when problems were reported?
+    \item What other ethical and non-ethical considerations may have contributed to the deaths and injuries?
+\end{enumerate}
+\subsection*{Solution}
+\begin{enumerate}[label=(\alph*)]
+  \item The Therac 25 developers did not properly test their code on hardware, and could not reliably verify it was safe and meets specifications.
+  Instead, leaving the code on machine without proper testing or debugging which allowed an entry error which showed settings which were
+  incorrect to the specific patient.
+  \item Engineers should have considered the software as part of the defects when investingating the machine. Instead,
+  inputs to the software from hardware were considered issues instead of the software iteself.
+  \item Failure to perform code review shows that little regard was ever given to the code writing process,
+  especially when 
+\end{enumerate}
+
+\end{document}
