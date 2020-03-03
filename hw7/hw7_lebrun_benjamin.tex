@@ -57,11 +57,9 @@
 
 \memofrom{Benjamin Lebrun} % Sender(s)
 
-\memosubject{Homework 3} % Memo subject
+\memosubject{Homework 5} % Memo subject
 
 \memodate{\today} % Date, set to \today for automatically printing todays date
-
-%\logo{\includegraphics[width=0.1\textwidth]{logo.png}} % Institution logo at the top right of the memo, comment out this line for no logo
 
 %----------------------------------------------------------------------------------------
 
@@ -74,73 +72,47 @@
 %	MEMO CONTENT
 %----------------------------------------------------------------------------------------
 
-\section*{Problem 3.1}
-Which registers hold the stack pointer, return address, and program counter?
+\section*{Problem 7.1}
+Multiply -90 by 105 using signed 8-bit binary multiplication to form a signed 16-bit
+result. Show all of your work.
 \subsection*{Solution}
-The stack pointer sits on register 13, the return address sits on register 14 in the link 
-register, and the program counter on register 15.
+See attached worksheet.
 
-
-\section*{Problem 3.4}
-The stm and ldm instructions include an optional ‘!’ after the address register. What does
-it do?
+\section*{Problem 7.2}
+Multiply 166 by 105 using unsigned 8-bit binary multiplication to form an unsigned 16-bit
+result. Show all of your work.
 \subsection*{Solution}
-If the '!' Is included, the address of the operation is stored back into the register.
+See attached worksheet.
+
+\section*{Problem 7.3}
+Write a section of ARM assembly code to multiply the value in r1 by 13 using only shift
+and add operations.
+\subsection*{Solution}
+\begin{lstlisting}
+    add r0,r1,r1,lsl #2
+    add r0,r0,r1,lsl #3
+\end{lstlisting}
 
 \newpage
-\section*{Problem 3.5}
-The following C statement declares an array of four integers, and initializes their values
-to 7, 3, 21, and 10, in that order.
+
+\section*{Problem 7.4}
+The following code will multiply the value in r0 by a constant C. What is C?
 \begin{lstlisting}
-    int nums[]={7,3,21,10};
+    add     r1,r0,r0,lsl #1
+    add     r0,r1,r0,lsl #2
 \end{lstlisting}
-\begin{enumerate}[label=\Alph*]
-    \item Write the equivalent in GNU ARM assembly
-    \item Write the ARM assembly instructions to load all four numbers into registers r3, r5, r6, and r9, respectively, using:
-    i. a single ldm instruction, and
-    ii. four ldr instructions.
-\end{enumerate}
 \subsection*{Solution}
-\begin{lstlisting}
-nums: .word 7, 3, 21, 10 @ Array of values
-\end{lstlisting}
+C = 7
 
-\begin{lstlisting}
-    ldm =nums,{r3-r6,r9}
-    ldr r3,[=nums]
-    ldr r4,[=nums,1]
-    ldr r5,[=nums,2]
-    ldr r6,[=nums,3]
-    ldr r9,[=nums,4]
-\end{lstlisting}
-
-\section*{Problem 3.6}
-What is the difference between a memory location and a CPU register?
+\section*{Problem 7.6}
+Show how to divide 78 by 6 using binary long division.
 \subsection*{Solution}
-A memory location generally sits on the stack which is usually in RAM, we move the memory location, or pointer to memory, to the register
-to be operated on by the CPU, then usually stored back into memory.
+See attached worksheet.
 
-\newpage
-\section*{Problem 3.8}
-Use ldm and stm to write a short sequence of ARM assembly language to copy 16 words of data from a source address to a
-destination address. Assume that the source address is already loaded in r0 and the destination address is already loaded in r1.
-You may use registers r2 through r5 to hold values as needed. Your code is allowed to modify r0 and/or r1.
+\section*{Problem 7.7}
+Demonstrate the division algorithm using a sequence of tables as shown in Section 7.3.2
+to divide 155 by 11.
 \subsection*{Solution}
-\lstinputlisting{3.8.S}
+See attached worksheet.
 
-\section*{Problem 3.10}
-Assume that x is an array of integers, and i and j are integers. Convert the following C statements into ARM assembly language.
-\begin{enumerate}[label=\Alph*]
-    \item x[i] = j;
-    \item x[j] = x[i];
-    \item x[i] = x[j*2];
-\end{enumerate}
-\subsection*{Solution}
-\lstinputlisting{3.10.S}
-
-\section*{Problem 3.11}
-What is the difference between the b instruction and the bl instruction? What is each used for?
-\subsection*{Solution}
-The bl instruction saves the address into the link register to return to, otherwise functionally
-both instructions causes the code to branch to a different section of code.
 \end{document}

@@ -1,0 +1,224 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Memo
+% LaTeX Template
+% Version 1.0 (30/12/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Rob Oakes (http://www.oak-tree.us) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,11pt]{texMemo} % Set the paper size (letterpaper, a4paper, etc) and font size (10pt, 11pt or 12pt)
+
+\usepackage{parskip} % Adds spacing between paragraphs
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{enumitem}
+\hypersetup{citecolor=DeepPink4}
+\hypersetup{linkcolor=red}
+\hypersetup{urlcolor=blue}
+\usepackage{cleveref}
+\setlength{\parindent}{15pt} % Indent paragraphs
+
+\lstset{
+  language=C,                % choose the language of the code
+  numbers=left,                   % where to put the line-numbers
+  stepnumber=1,                   % the step between two line-numbers.        
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+}
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+\memoto{Dr. Larry Pyeatt} % Recipient(s)
+
+\memofrom{Benjamin Lebrun} % Sender(s)
+
+\memosubject{Homework 4} % Memo subject
+
+\memodate{\today} % Date, set to \today for automatically printing todays date
+
+%\logo{\includegraphics[width=0.1\textwidth]{logo.png}} % Institution logo at the top right of the memo, comment out this line for no logo
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+
+\maketitle % Print the memo header information
+
+%----------------------------------------------------------------------------------------
+%	MEMO CONTENT
+%----------------------------------------------------------------------------------------
+
+\section*{Problem 4.1}
+If r0 initially contains 1, what will it contain after the third instruction in the sequence below?
+
+\begin{lstlisting}
+    add r0,r0,#1
+    mov r1,r0
+    add r0,r1,r0    lsl #1
+\end{lstlisting}
+\subsection*{Solution}
+r0 will contain 6 after the third instruction execution.
+
+\section*{Problem 4.2}
+What will r0 and r1 contain after each of the following instructions? Give your answers in base 10.
+\begin{lstlisting}
+    mov r0,#1
+    mov r1,#0x20    @ load 32
+    orr r1,r1,r0
+    lsl r1,#0x2     @ shift 2, 132
+    orr r1,r1,r0
+    eor r0,r0,r1    @ xor
+    lsr r1,r0,#3
+\end{lstlisting}
+\subsection*{Solution}
+r0 is 132 and r1 is 16 after these instructions execute
+
+\newpage
+
+\section*{Problem 4.3}
+What is the difference between lsr and asr?
+\subsection*{Solution}
+asr is generally for signed numbers, and takes into account if the number being shifted is positive or
+negative, but fill the bits with the appropriate compliment. lsr will shift, but will always fill the 
+bits with zero instead of the compliment or signed value.
+
+\section*{Problem 4.5}
+Given the following variable definitions:
+\begin{lstlisting}
+    num1:   .word   x
+    num2:   .word   y
+\end{lstlisting}
+where you do not know the values of x and y, write a short sequence of ARM assembly instructions to load
+the two numbers, compare them, and move the largest number into register r0.
+\subsection*{Solution}
+\begin{lstlisting}
+    ldr     r0,=num1    @ load r0, x
+    ldr     r1,=num2    @ load r1, y
+    cmp     r0,r1       @ compare r0 <= r1
+    movgt   r0,r1       @ r0 = r1; else largest is already in r0
+\end{lstlisting}
+
+\section*{Problem 4.6}
+Assuming that a is stored in register r0 and b is stored in register r1, show the ARM assembly code that
+is equivalent to the following C code.
+\begin{lstlisting}
+    if (a & 1 )
+        a = -a;
+    else
+        b = b+7;
+\end{lstlisting}
+\subsection*{Solution}
+\begin{lstlisting}
+    tst     r0,#1       @ test 0 bit of a
+    negne   r0          @ negate if CPSR flag set
+    addeq   r1,r1,#7    @ else add 7 to b
+\end{lstlisting}
+
+\section*{Problem 4.7}
+Without using the mul instruction, give the instructions to multiply r3 by the following constants, leaving
+the result in r0. You may also use r1 and r2 to hold temporary results, and you do not need to preserve the
+original contents of r3.
+\begin{enumerate}[label=\Alph*]
+    \item 10
+    \item 100
+    \item 575
+    \item 123
+\end{enumerate}
+\subsection*{Solution}
+Using shift and add algorithm
+
+A.
+\begin{lstlisting}
+    mov r2, r3
+    lsl r3, r3, #3
+    lsl r2, r2, #5
+    add r0, r2, r3
+\end{lstlisting}
+B.
+\begin{lstlisting}
+    mov r2, r3
+    mov r1, r2
+    lsl r3, r3, #6
+    lsl r2, r2, #5
+    lsl r1, r1, #2
+    add r0, r2, r3
+    add r0, r0, r1
+\end{lstlisting}
+C.
+\begin{lstlisting}
+    mov r2, r3
+    mov r1, r2
+    lsl r3, r3, #9
+    lsl r2, r2, #6
+    lsl r1, r1, #1
+    sub r2, r2, r1
+    add r0, r2, r3
+\end{lstlisting}
+D.
+\begin{lstlisting}
+    mov r2, r3
+    lsl r3, r3, #7
+    lsl r2, r2, #1
+    sub r0, r3, r2
+\end{lstlisting}
+
+\section*{Problem 4.8}
+Assume that r0 holds the least significant 32 bits of a 64-bit integer a, and r1 holds the most significant 32
+bits of a. Likewise, r2 holds the least significant 32 bits of a 64-bit integer b, and r3 holds the most
+significant 32 bits of b. Show the shortest instruction sequences necessary to:
+\begin{enumerate}[label=\Alph*]
+    \item compare a to b, setting the CPSR flags,
+    \item shift a left by one bit, storing the result in b,
+    \item add b to a, and
+    \item subtract b from a.
+\end{enumerate}
+\subsection*{Solution}
+A.
+\begin{lstlisting}
+    cmp     r1, r3
+    cmpeq   r0, r2
+\end{lstlisting}
+B.
+\begin{lstlisting}
+    lsls    r2, r0, #1
+    lsl     r3, r1, #1
+    addcs   r3, r3, #1
+\end{lstlisting}
+C.
+\begin{lstlisting}
+    adds r2, r2, r0
+    adc  r3, r3, r1
+\end{lstlisting}
+D.
+\begin{lstlisting}
+    subs r2, r2, r0
+    sbc  r3, r3, r1
+\end{lstlisting}
+
+\end{document}

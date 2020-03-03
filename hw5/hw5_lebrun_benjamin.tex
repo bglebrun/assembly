@@ -1,0 +1,210 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Memo
+% LaTeX Template
+% Version 1.0 (30/12/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Rob Oakes (http://www.oak-tree.us) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,11pt]{texMemo} % Set the paper size (letterpaper, a4paper, etc) and font size (10pt, 11pt or 12pt)
+
+\usepackage{parskip} % Adds spacing between paragraphs
+\usepackage[colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{enumitem}
+\hypersetup{citecolor=DeepPink4}
+\hypersetup{linkcolor=red}
+\hypersetup{urlcolor=blue}
+\usepackage{cleveref}
+\setlength{\parindent}{15pt} % Indent paragraphs
+
+\lstset{
+  language=C,                % choose the language of the code
+  numbers=left,                   % where to put the line-numbers
+  stepnumber=1,                   % the step between two line-numbers.        
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+}
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+\memoto{Dr. Larry Pyeatt} % Recipient(s)
+
+\memofrom{Benjamin Lebrun} % Sender(s)
+
+\memosubject{Homework 5} % Memo subject
+
+\memodate{\today} % Date, set to \today for automatically printing todays date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+
+\maketitle % Print the memo header information
+
+%----------------------------------------------------------------------------------------
+%	MEMO CONTENT
+%----------------------------------------------------------------------------------------
+
+\section*{Problem 5.1}
+What does it mean for a register to be volatile? Which ARM registers are considered
+volatile according to the ARM function calling convention?
+\subsection*{Solution}
+A register that is volatile means that it's available to be freely used, therefore
+never attempt to store important data to a volatile register and always either
+allocate data to the stack, from a global variable, or use one of the non-volatile
+registers r4-r11 but saving these registers to the stack or to a variable before
+changing them within a function.
+
+\section*{Problem 5.2}
+Fully explain the differences between static variables and automatic variables.
+\subsection*{Solution}
+Automatic variables only stick around as long as the current block of code is active
+and within scope. This variable is destroyed when we go out of scope of the code block.
+A static variable however will attepmt to remain alive for the duration of the program's
+lifetime.
+
+\newpage
+\section*{Problem 5.5}
+You are writing a function and you decided to use registers r4 and r5 within the 
+function. Your function will not call any other functions; it is self-contained. 
+Modify the following skeleton structure to ensure that r4 and r5 can be used within 
+the function and are restored to comply with the ARM standards, but without unnecessary
+memory accesses.
+\begin{lstlisting}
+    myfunc: stmfd   sp!,{lr}
+
+    @ function statements
+
+            ldmfd   sp!,{lr}
+\end{lstlisting}
+\subsection*{Solution}
+
+\begin{lstlisting}
+    myfunc: stmfd   sp!,{lr}
+            push    {r4-r5}
+
+    @ function statements
+
+            pop     {r4-r5}
+            ldmfd   sp!,{lr}
+\end{lstlisting}
+
+
+\section*{Problem 5.6}
+Convert the following C program to ARM assembly, using a post-test loop:
+\begin{lstlisting}
+int main() {
+    for(i=0;i<10;i++) printf("Hi!\n");
+    return 0;
+}
+\end{lstlisting}
+\subsection*{Solution}
+\lstinputlisting{5.6.S}
+
+\newpage
+\section*{Problem 5.8}
+Write a complete subroutine in ARM assembly that is equivalent to the following C subroutine.
+\begin{lstlisting}
+/* This function copies 'count' bytes from 'src' to 'dest'. */
+void bytecopy(char des[], char src[], int count) {
+    count = count - 1;
+    while(count>=0) {
+        dest[count] = src[count];
+        count = count - 1;
+    }
+}
+\end{lstlisting}
+\subsection*{Solution}
+\lstinputlisting{5.8.S}
+
+\newpage
+\section*{Problem 5.10}
+Write an ARM assembly function to calculate the average of an array of integers, given a
+pointer to the array and the number of items in the array. Your assembly function must 
+implement the following C function prototype:
+\begin{lstlisting}
+int average(int *array, int number_of_items);
+\end{lstlisting}
+Assume that the processor does not support the div instruction, but there is a function
+available to divide two integers. You do not have to write this function, but you may need
+to call it. Its C prototype is:
+\begin{lstlisting}
+int divide(int numberator, int denominator);
+\end{lstlisting}
+\subsection*{Solution}
+\lstinputlisting{5.10.S}
+
+\section*{Problem 5.11}
+Write a complete function in ARM assembly that is equivalent to the following C function.
+Note that a and b must be allocated on the stack, and their addresses must be passed to
+scanf so that it can place their values into memory.
+\begin{lstlisting}
+int read_and_add() {
+    int a, b, sum;
+    scanf("%d",&a);
+    scanf("%d",&b);
+    sum = a + b;
+    return sum;
+}
+\end{lstlisting}
+\subsection*{Solution}
+\lstinputlisting{5.11.S}
+
+\section*{Problem 5.13}
+For large x, the factorial function is slow. However, a lookup table can be added to the
+function to improve average performance. This technique is commonly known as memoization
+or tabling, but is sometimes called dynamic programming. The following C implementation
+of the factorial function uses memoization. Modify your ARM assembly program from the
+previous problem to include memoization.
+\begin{lstlisting}
+#define TABSIZE 50
+/* The factorial function calculates x! */
+int factorial(int x) {
+    /* declare table and initialize to all zero */
+    static in table[TABSIZE] = {0};
+
+    /* handle base case */
+    if(x<2) return 1;
+
+    /* if x! is not in the table and x is  small enough,
+       then compute x! and put it in the table */
+       if((x < TABSIZE) && (table[x] == 0)) table[x] = x * factorial(x-1);
+
+    /* if x is small enough then return the value from the table */
+    if(x < TABSIZE) return table[x];
+
+    /* if x is too large to be in the table, use a recursive call */
+    return x * factorial(x - 1);
+}
+\end{lstlisting}
+\subsection*{Solution}
+\lstinputlisting{5.13.S}
+
+\end{document}
